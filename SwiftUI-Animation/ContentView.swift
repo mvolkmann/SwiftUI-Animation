@@ -40,25 +40,24 @@ struct ContentView: View {
             .scaleEffect(!scale || on ? 1 : 0)
             .rotationEffect(.degrees(!rotate || on ? 0 : 360))
             .animation(easingFunction) // implicit animation
-            
+
             NavigationView { // Picker will be disabled without this.
                 Form {
+                    Toggle("Animate Color?", isOn: $color)
+                    Toggle("Animate Opacity?", isOn: $opacity)
+                    Toggle("Animate Rotation?", isOn: $rotate)
+                    Toggle("Animate Scale?", isOn: $scale)
                     Picker("Easing Function", selection: $easingType) {
                         ForEach(EasingType.allCases, id: \.self) { easingType in
                             Text("\(easingType.rawValue)").tag(easingType)
                         }
                     }
-                    Toggle("Animate Color?", isOn: $color)
-                    Toggle("Animate Opacity?", isOn: $opacity)
-                    Toggle("Animate Rotation?", isOn: $rotate)
-                    Toggle("Animate Scale?", isOn: $scale)
                     Button("Toggle") {
                         if color {
                             borderColor = borderColor == .red ? .blue : .red
                         }
                         on.toggle()
-                }
-                    
+                    }
                 }
             }
         }
