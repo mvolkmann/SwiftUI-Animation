@@ -39,9 +39,7 @@ struct ContentView: View {
             .opacity(!opacity || on ? 1 : 0)
             .scaleEffect(!scale || on ? 1 : 0)
             .rotationEffect(.degrees(!rotate || on ? 0 : 360))
-            //TODO: Is an implicit animation required to specify the easing function?
             .animation(easingFunction) // implicit animation
-            
             
             NavigationView { // Picker will be disabled without this.
                 Form {
@@ -55,13 +53,11 @@ struct ContentView: View {
                     Toggle("Animate Rotation?", isOn: $rotate)
                     Toggle("Animate Scale?", isOn: $scale)
                     Button("Toggle") {
-                        withAnimation { // explicit animation
-                            if color {
-                                borderColor = borderColor == .red ? .blue : .red
-                            }
-                            on.toggle()
+                        if color {
+                            borderColor = borderColor == .red ? .blue : .red
                         }
-                    }
+                        on.toggle()
+                }
                     
                 }
             }
