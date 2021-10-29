@@ -1,11 +1,7 @@
 import SwiftUI
 
 enum EasingType: String, CaseIterable {
-    case linear
-    case easeIn
-    case easeOut
-    case easeInOut
-    case spring
+    case forever, linear, easeIn, easeOut, easeInOut, spring
 }
 
 struct ContentView: View {
@@ -18,11 +14,15 @@ struct ContentView: View {
     @State private var scale = false
     
     private var easingFunction: Animation {
+        let duration = 1.0
         switch easingType {
-        case .linear: return Animation.linear(duration: 1)
-        case .easeIn: return Animation.easeIn(duration: 2)
-        case .easeOut: return Animation.easeOut(duration: 2)
-        case .easeInOut: return Animation.easeInOut(duration: 2)
+        case .linear: return Animation.linear(duration: duration)
+        case .forever: return Animation
+                .linear(duration: duration)
+                .repeatForever(autoreverses: false)
+        case .easeIn: return Animation.easeIn(duration: duration)
+        case .easeOut: return Animation.easeOut(duration: duration)
+        case .easeInOut: return Animation.easeInOut(duration: duration)
         case .spring: return Animation.spring(dampingFraction: 0.5).speed(0.3)
         }
     }
@@ -40,13 +40,13 @@ struct ContentView: View {
             .scaleEffect(!scale || on ? 1 : 0)
             .rotationEffect(.degrees(!rotate || on ? 0 : 360))
             .animation(easingFunction) // implicit animation
-
+            
             NavigationView { // Picker will be disabled without this.
                 Form {
-                    Toggle("Animate Color?", isOn: $color)
-                    Toggle("Animate Opacity?", isOn: $opacity)
-                    Toggle("Animate Rotation?", isOn: $rotate)
-                    Toggle("Animate Scale?", isOn: $scale)
+                    Toggle("Animate Color", isOn: $color)
+                    Toggle("Animate Opacity", isOn: $opacity)
+                    Toggle("Animate Rotation", isOn: $rotate)
+                    Toggle("Animate Scale", isOn: $scale)
                     Picker("Easing Function", selection: $easingType) {
                         ForEach(EasingType.allCases, id: \.self) { easingType in
                             Text("\(easingType.rawValue)").tag(easingType)
